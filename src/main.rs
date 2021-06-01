@@ -49,39 +49,39 @@ mod test_get_command {
     }
 }
 
-fn get_google_search_url(s: &str) -> String {
+fn get_google_url(s: &str) -> String {
     let s = s.split_whitespace().collect::<Vec<&str>>().join("+");
     format!("https://google.com/search?q={}", s)
 }
 
 #[cfg(test)]
-mod test_get_google_search_url {
+mod test_get_google_url {
     use super::*;
 
     #[test]
-    fn test_get_google_search_url() {
-        let actual = get_google_search_url("foo");
+    fn test_get_google_url() {
+        let actual = get_google_url("foo");
         let expected = "https://google.com/search?q=foo";
         assert_eq!(actual, expected);
     }
 
     #[test]
-    fn test_get_google_search_url_with_one_whitespace() {
-        let actual = get_google_search_url("foo bar");
+    fn test_get_google_url_with_one_whitespace() {
+        let actual = get_google_url("foo bar");
         let expected = "https://google.com/search?q=foo+bar";
         assert_eq!(actual, expected);
     }
 
     #[test]
-    fn test_get_google_search_url_with_some_whitespace() {
-        let actual = get_google_search_url("foo  bar");
+    fn test_get_google_url_with_some_whitespace() {
+        let actual = get_google_url("foo  bar");
         let expected = "https://google.com/search?q=foo+bar";
         assert_eq!(actual, expected);
     }
 
     #[test]
-    fn test_get_google_search_url_with_three_words() {
-        let actual = get_google_search_url("foo bar foobar");
+    fn test_get_google_url_with_three_words() {
+        let actual = get_google_url("foo bar foobar");
         let expected = "https://google.com/search?q=foo+bar+foobar";
         assert_eq!(actual, expected);
     }
@@ -91,7 +91,7 @@ mod test_get_google_search_url {
 async fn search(query: web::Query<Query>) -> impl Responder {
     let cmd_first_str = get_command(&query.cmd).to_owned();
     let url = match cmd_first_str {
-        _ => get_google_search_url(&query.cmd),
+        _ => get_google_url(&query.cmd),
     };
     HttpResponse::TemporaryRedirect()
         .header(http::header::LOCATION, url)
