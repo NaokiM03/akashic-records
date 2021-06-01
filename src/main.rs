@@ -16,16 +16,15 @@ struct Query {
     cmd: String,
 }
 
-fn get_command(query_string: &str) -> &str {
-    query_string
-        .split_whitespace()
+fn get_command(s: &str) -> &str {
+    s.split_whitespace()
         .collect::<Vec<&str>>()
         .first()
-        .unwrap_or(&query_string)
+        .unwrap_or(&s)
 }
 
 #[cfg(test)]
-mod tests {
+mod test_get_command {
     use super::*;
 
     #[test]
