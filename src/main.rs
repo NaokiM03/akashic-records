@@ -1,5 +1,15 @@
-use actix_web::{get, web, App, HttpResponse, HttpServer, Responder};
+use actix_web::{get, http, web, App, HttpResponse, HttpServer, Responder};
 use serde::Deserialize;
+
+#[get("/")]
+async fn index() -> impl Responder {
+    HttpResponse::TemporaryRedirect()
+        .header(
+            http::header::LOCATION,
+            "https://github.com/NaokiM03/akashic-records",
+        )
+        .finish()
+}
 
 #[derive(Deserialize)]
 struct Query {
@@ -10,7 +20,8 @@ fn get_command(query_string: &str) -> &str {
     query_string
         .split_whitespace()
         .collect::<Vec<&str>>()
-        .first().unwrap_or(&query_string)
+        .first()
+        .unwrap_or(&query_string)
 }
 
 #[cfg(test)]
@@ -47,7 +58,7 @@ async fn search(query: web::Query<Query>) -> impl Responder {
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    HttpServer::new(|| App::new().service(search))
+    HttpServer::new(|| App::new().service(index).service(search))
         .bind("127.0.0.1:3000")?
         .run()
         .await
