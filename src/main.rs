@@ -6,9 +6,45 @@ struct Query {
     cmd: String,
 }
 
+fn get_command(query_string: &str) -> &str {
+    if query_string.contains(' ') {
+        let index_of_space = query_string.find(' ').unwrap_or(0);
+        return &query_string[..index_of_space];
+    } else {
+        query_string
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_get_command_with_no_whitespace() {
+        let actual = get_command("foo");
+        let expected = "foo";
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn test_get_command_with_one_whitespace() {
+        let actual = get_command("foo bar");
+        let expected = "foo";
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn test_get_command_with_some_whitespace() {
+        let actual = get_command("foo  bar");
+        let expected = "foo";
+        assert_eq!(actual, expected);
+    }
+}
+
 #[get("/search")]
 async fn search(query: web::Query<Query>) -> impl Responder {
-    HttpResponse::Ok().body(&query.cmd)
+    let command = get_command(&query.cmd).to_owned();
+    HttpResponse::Ok().body(command)
 }
 
 #[actix_web::main]
