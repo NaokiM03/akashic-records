@@ -101,7 +101,7 @@ async fn search(query: web::Query<Query>) -> impl Responder {
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     HttpServer::new(|| App::new().service(index).service(search))
-        .bind("127.0.0.1:3000")?
+        .bind("0.0.0.0:3000")?
         .run()
         .await
 }

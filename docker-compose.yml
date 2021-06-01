@@ -1,0 +1,31 @@
+version: "3"
+volumes:
+  app-target:
+  test-target:
+services:
+  app:
+    build: .
+    container_name: akashic-records-app
+    environment:
+      TZ: 'Asia/Tokyo'
+    ports:
+      - 3000:3000
+    working_dir: /akashic-records
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/akashic-records
+      - app-target:/akashic-records/target
+    command: cargo watch --poll -x run
+  test:
+    build: .
+    container_name: akashic-records-test
+    environment:
+      TZ: 'Asia/Tokyo'
+    working_dir: /akashic-records
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/akashic-records
+      - test-target:/akashic-records/target
+    command: cargo watch --poll -x test
