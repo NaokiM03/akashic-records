@@ -1,10 +1,7 @@
 use actix_web::{get, http, web, HttpResponse, Responder};
 
 mod commands;
-use commands::github::*;
-use commands::google::*;
-use commands::twitter::*;
-use commands::*;
+use commands::{get_command, github::*, google::*, twitter::*, Query};
 
 #[get("/search")]
 async fn search(query: web::Query<Query>) -> impl Responder {

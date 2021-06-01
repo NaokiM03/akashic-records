@@ -1,8 +1,7 @@
 use actix_web::{App, HttpServer};
 
 mod controllers;
-use controllers::index::*;
-use controllers::search::*;
+use controllers::{index::*, search::*};
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
