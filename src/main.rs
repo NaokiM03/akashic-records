@@ -7,12 +7,10 @@ struct Query {
 }
 
 fn get_command(query_string: &str) -> &str {
-    if query_string.contains(' ') {
-        let index_of_space = query_string.find(' ').unwrap_or(0);
-        return &query_string[..index_of_space];
-    } else {
-        query_string
-    }
+    query_string
+        .split_whitespace()
+        .collect::<Vec<&str>>()
+        .first().unwrap_or(&query_string)
 }
 
 #[cfg(test)]
